@@ -1,0 +1,55 @@
+/* estilos.css */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+    background-color: #3f51b5;
+    padding: 20px;
+}
+
+#container {
+    width: 80%;
+    margin: 20px auto;
+    border: 2px solid #3f51b5;
+    padding: 20px;
+}
+
+input, button {
+    display: block;
+    width: 50%;
+    margin: 10px auto;
+}
+
+button {
+    color: white;
+    background-color: #3f51b5;
+    border: none;
+    padding: 10px;
+}
+
+#calcular, #otra, #salir {
+    display: none;
+}
+
+#resultado {
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Ocultar el input y el label de la remuneración al principio */
+#remuneracion, #remuneracion-label {
+    display: none;
+}
+#tablaClientes {
+width: 100%;
+border: 1px;
+border-radius: 5px 5px 5px;
+}
+#tablaClientes tbody td{
+border: 1px solid;
+}

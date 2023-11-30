@@ -1,14 +1,27 @@
+<!-- index.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1°Entrega José Erices Gonzalez</title>
+    <title>Simulador de remuneraciones</title>
+    <link rel="stylesheet" href="main/estilos.css">
 </head>
 <body>
-    <h1 style="font-family:'Times New Roman', Times, serif">Simulador de Remuneraciones </h1>
-    <script src="./js/main.js"></script>
+    <h1>Simulador de remuneraciones</h1>
+    <div id="container">
+        <p id="mensaje">¡Bienvenidos al simulador de remuneraciones!</p>
+        <input type="text" id="nombre" placeholder="Ingrese su nombre">
+        <button id="aceptar">Aceptar</button>
+        <button id="calcular">Calcular</button>
+        <button id="otra">Otra operación</button>
+        <button id="salir">Salir</button>
+        <p id="resultado"></p>
+        <!-- Cambiar el id del input de la remuneración -->
+        <input type="text" id="remuneracion" placeholder="Ingrese su remuneración">
+        <a href="remuneraciones.html">ver historial de remuneraciones</a>
+        <a href="#" onclick="limpiarHistorial()">Borrar Historial de Remuneraciones</a>
+    </div>
+    <script src="js/main.js"></script>
 </body>
 </html>
-
-
