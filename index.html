@@ -5,23 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulador de remuneraciones</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="main/estilos.css">
+
 </head>
 <body>
-    <h1>Simulador de remuneraciones</h1>
-    <div id="container">
+    <h1>Simulador de remuneraciones y conversor de Pesos a U.F</h1>
+       <div id="container">
         <p id="mensaje">¡Bienvenidos al simulador de remuneraciones!</p>
         <input type="text" id="nombre" placeholder="Ingrese su nombre">
         <button id="aceptar">Aceptar</button>
+        <input type="text" id="remuneracion" placeholder="Ingrese su remuneración">
         <button id="calcular">Calcular</button>
-        <button id="otra">Otra operación</button>
+        <button id="otra">Desea otra operación</button>
         <button id="salir">Salir</button>
         <p id="resultado"></p>
-        <!-- Cambiar el id del input de la remuneración -->
-        <input type="text" id="remuneracion" placeholder="Ingrese su remuneración">
-        <a href="remuneraciones.html">ver historial de remuneraciones</a>
-        <a href="#" onclick="limpiarHistorial()">Borrar Historial de Remuneraciones</a>
-    </div>
+                
+        <a href="remuneraciones.html" class="verHistorial">ver historial </a>
+        <a href="#" class="limpHist"  onclick="limpiarHistorial()">Limpiar Historial</a>
+        <a href="index.html" class="actualizar" onclick="actualizarData()">Volver al inicio</a>
+   <div>
+        <h2>Conversor de Pesos a U.F</h2>
+        <p><span id="UF"></span></p>
+        <p>Ingrese el monto en pesos chilenos y presione el botón "Convertir"</p>
+        <input id="pesos" type="number" min="0" placeholder="Pesos">
+        <button id="convertir" onclick="convertir()">Convertir</button>
+        <div id="result"></div>
+      </div>
+
+    </div><script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
     <script src="js/main.js"></script>
+    
 </body>
 </html>

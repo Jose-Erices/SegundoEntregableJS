@@ -1,38 +1,78 @@
-// js
-// Crear un array para almacenar los datos de los clientes
+// Función asíncrona que obtiene el valor de la UF desde la API
+async function obtenerValorUF() {
+  const apiUrl = "https://www.mindicador.cl/api/uf";
+  const respuesta = await fetch(apiUrl);
+  if (!respuesta || !respuesta.ok) {
+   
+      throw new Error("Error en la solicitud");
+  }
+  const datos = await respuesta.json();
+  const valorUF = datos.serie[0].valor;
+  if (isNaN(valorUF)) {
+            throw new Error("Valor de la UF no encontrado");
+  }
+    return valorUF;
+}
+//Funcion que muestra el Valor U.F
+const apiUrl = "https://www.mindicador.cl/api/uf"
+const valorUF = document.getElementById("UF")
+fetch(apiUrl)
+  .then(respuesta => {
+    if(!respuesta){
+      throw new Error ("Error en la solicitud")
+    }
+    return respuesta.json()
+  }) 
+  .then(datos =>{
+    console.log("valor Unidad de Fomento Chile", datos.serie[0].valor)
+    valorUF.textContent = 'Valor actual de la U.F '+ datos.serie[0].valor
+  })
+// Array para almacenar los datos de los clientes
 let clientes = [];
-
 // Crear una función para calcular el sueldo líquido
-function calcularSueldo(sueldoNeto, AFP = 0.11, impuesto = 0.04, isapre = 0.045) {
+function calcularSueldo(sueldoNeto, AFP = 0.11, impuesto = 0.04, isapre = 0.045 ) {
   let montoDescontado =
     sueldoNeto * AFP + sueldoNeto * impuesto + sueldoNeto * isapre;
-  let sueldoCalculado = sueldoNeto - montoDescontado
-  localStorage.setItem('sueldoCalculado', sueldoCalculado)
+  let sueldoCalculado = sueldoNeto - montoDescontado 
+  localStorage.setItem('sueldoCalculado', sueldoCalculado  )
   return sueldoCalculado;
 }
-
-// Crear una función para validar la respuesta del usuario
+//Promesa
+const clienteDelaTabla = (permisos) => {
+  return new Promise((resolve, reject) => {
+    const data = localStorage.getItem("clientes")
+  if(data){
+    resolve(JSON.parse(data))
+  }else{
+    reject("no hay data en el localStorage")
+  }
+  })
+}
+function actualizarData(){
+  console.log(clienteDelaTabla(false))
+}
+// función para validar la respuesta del usuario
 function validarRta(respuesta, textoValidar) {
   return respuesta.toLowerCase() == textoValidar;
 }
 
-// Crear una función para mostrar el mensaje en el párrafo
+// función para mostrar el mensaje en el párrafo
 
 function mostrarMensaje(mensaje) {
   const p = document.getElementById("resultado");
   p.textContent = mensaje;
 };
 
-// Llama a una función anónima después de 3000 milisegundos (3 segundos)
+// Llama a una función anónima después de 3000 milisegundos (2 segundos)
 setTimeout(function() {
   mostrarMensaje("Por favor ingrese su nombre ⬆️");
 }, 3000);
-// Crear una función para guardar los datos de los clientes en el localStorage
+// función para guardar los datos de los clientes en el localStorage
 function guardarDatos() {
   localStorage.setItem("clientes", JSON.stringify(clientes));
 }
 
-// Crear una función para recuperar los datos de los clientes del localStorage
+// función para recuperar los datos de los clientes del localStorage
 function recuperarDatos() {
   let datos = localStorage.getItem("clientes");
   if (datos) {
@@ -40,7 +80,7 @@ function recuperarDatos() {
   }
 }
 
-// Crear una función para mostrar el menor sueldo líquido de los clientes
+// función para mostrar el menor sueldo líquido de los clientes
 function mostrarMenorSueldo() {
   let menorSueldo = clientes.reduce((min, cliente) => {
     return cliente.sueldoLiquido < min.sueldoLiquido ? cliente : min;
@@ -52,18 +92,37 @@ function mostrarMenorSueldo() {
   );
 }
 
-// Crear una variable para indicar si es la primera vez que se ejecuta el simulador
+// variable para indicar si es la primera vez que se ejecuta el simulador
 let primeraVez = true;
 
 function limpiarHistorial(){
   localStorage.removeItem("clientes");
-  alert("Historial eliminado")
-}
+  Swal.fire({
+    color:"black",
+    title: "¿Estas Seguro?",
+    text: "Eliminaras todo el Historial",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "SI"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: "OK",
+        text: "Historial Eliminado",
+        icon: "success",
+        color:"black",
+        backgraund:"gray"  
+          
+      });
+    }
+  });
+ }
 
 
-// Crear una función para ejecutar el simulador
+// función para ejecutar el simulador
 function ejecutarSimulador() {
-  // Recuperar los datos del localStorage
   recuperarDatos();
 
   // Obtener los elementos del DOM
@@ -80,10 +139,11 @@ function ejecutarSimulador() {
     // Validar que el nombre no esté vacío
     if (nombre.value != "") {
       // Mostrar un mensaje de bienvenida solo si es la primera vez
-      if (primeraVez ) {
-        mostrarMensaje(`Por favor ingrese su Remuneración que desea calcular ⬇️`);
+      if (primeraVez) {
+        primeraVez = true;
+        mostrarMensaje(`Por favor ingrese su remuneración que desea calcular ⬆️`);
         // Cambiar el valor de la variable a false
-        primeraVez = false;
+        
       } else {
         
       }
@@ -91,16 +151,19 @@ function ejecutarSimulador() {
       let nombreCliente = nombre.value.toUpperCase();
       // Guardar el nombre del cliente en el array
       clientes.push({ nombre: nombreCliente });
+      
+      // Mostrar el input de la remuneración
+      remuneracion.style.display = "block";
       // Limpiar el input del nombre
       nombre.value = "";
       // Ocultar el input del nombre
       nombre.style.display = "none";
       // Ocultar el botón aceptar
       aceptar.style.display = "none";
-      // Mostrar el input de la remuneración
-      remuneracion.style.display = "block";
+      
       // Mostrar el botón calcular
       calcular.style.display = "block";
+      
     } else {
       // Mostrar un mensaje de error
       mostrarMensaje("Por favor rellenar los campos solicitados 🙌");
@@ -118,7 +181,7 @@ function ejecutarSimulador() {
 
       // Mostrar el resultado
       mostrarMensaje(
-        `El líquido a recibir es de: $${sueldoLiquido.toLocaleString("es-CL")}`
+        `El líquido a recibir es de: $${sueldoLiquido.toLocaleString("es-CL")} y si deseas puedes convertir tu sueldo en U.F ⬇️`
       );
       // Guardar los datos del cliente en el array
       clientes[clientes.length - 1].sueldoLiquido = sueldoLiquido;
@@ -157,16 +220,30 @@ function ejecutarSimulador() {
 
   // Agregar un evento al botón salir
   salir.addEventListener("click", function () {
+    //  // Mostrar el botón aceptar
+    //  aceptar.style.display = "block";
     // Mostrar un mensaje de agradecimiento
-    mostrarMensaje("¡Muchas gracias por preferirnos!");
-    // Mostrar el menor sueldo líquido de los clientes
+  
     mostrarMenorSueldo();
     // Ocultar los botones otra y salir
     otra.style.display = "none";
     salir.style.display = "none";
-    // Mostrar el botón aceptar
-    aceptar.style.display = "block";
+    mostrarMensaje("¡Muchas gracias por preferirnos!");
+   
   });
+  }
+  // Función asíncrona que convierte los pesos a UF y muestra el resultado
+async function convertir() {
+  var pesos = document.getElementById("pesos").value;
+  if (pesos > 0) {
+      // Obtener el valor de la UF desde la API
+      var valorUF = await obtenerValorUF();
+      var uf = pesos / valorUF;
+      uf = uf.toFixed(2);
+      document.getElementById("result").innerHTML = pesos + " pesos = " + uf + " UF";
+  } else {
+      document.getElementById("result").innerHTML = "Por favor, ingrese un valor válido";
+  }
 }
 
 // Ejecutar el código cuando la página se carga completamente

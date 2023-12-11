@@ -14,3 +14,4 @@ for (let i = 0; i< clientes.length;i++){
     let celda3 = row.insertCell(2)
     celda3.innerHTML = cliente.sueldoLiquido 
 }
+
